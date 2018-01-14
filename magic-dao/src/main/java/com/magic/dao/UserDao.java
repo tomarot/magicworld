@@ -15,14 +15,8 @@ import java.util.List;
  * Time: 下午1:55
  * To change this template use File | Settings | File Templates.
  */
-@Repository
-public class UserDao {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public interface UserDao {
 
-    public List<User> getUserByEntity(User user){
-        String sql = "select * from user where username = ? and password = ?";
-        List<User> userList = jdbcTemplate.query(sql,new Object[]{user.getUserName(),user.getPassword()},new BeanPropertyRowMapper(User.class));
-        return userList;
-    }
+    public List<User> getUserByEntity(User user);
+
 }
