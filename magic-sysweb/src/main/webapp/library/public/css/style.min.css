@@ -6345,7 +6345,8 @@ body.rtls .top-navigation #page-wrapper,body.rtls .top-navigation .footer.fixed,
 }
 
 .skin-1 .nav>li.active {
-	background: #5b6fb9;
+	/*background: #5b6fb9;*/
+	background: #10619f;
 }
 
 .skin-1 .nav>li>a {
@@ -6424,11 +6425,11 @@ body.skin-1 {
 }
 
 .skin-1 .navbar-default .nav>li>a:focus{
-	background: #4a5ea9;
+	background: #05406d;
 	color: #fff
 }
 .skin-1 .navbar-default .nav>li>a:hover {
-	background: #546ab9;
+	background: #217cc2;
 	color: #fff
 }
 .skin-1 .nav.nav-tabs>li.active>a {
@@ -6436,8 +6437,7 @@ body.skin-1 {
 }
 
 .skin-1 .content-tabs {
-	//border-bottom: solid 2px #39aef5;
-	border-bottom: solid 2px #6079d4
+	border-bottom: solid 2px #075590
 }
 
 .skin-1 .nav.nav-tabs>li.active {
@@ -6445,14 +6445,12 @@ body.skin-1 {
 }
 
 .skin-1 .page-tabs a.active {
-	//background: #39aef5;
-	background: #6079d4;
+	background: #0c3555;
 	color: #fff
 }
 
 .skin-1 .page-tabs a.active i:hover,.skin-1 .page-tabs a.active:hover {
-	//background: #0e9aef;
-	background: #6079d4;
+	background: #0c3555;
 	color: #fff
 }
 
@@ -6665,7 +6663,8 @@ body.skin-3 {
 }
 
 .navbar-static-side {
-	background: #718dd3
+	/*background: #718dd3*/
+	background: #075590
 }
 
 .nav-close {
