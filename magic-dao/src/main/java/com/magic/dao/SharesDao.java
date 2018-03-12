@@ -68,4 +68,9 @@ public class SharesDao {
         List<Shares> list = jdbcTemplate.query(sql,new Object[]{code},new BeanPropertyRowMapper(Shares.class));
         return list!=null?list.get(0):null;
     }
+    public Shares getRandShares(){
+        String sql = "select * from gp_shares order by rand() LIMIT 1";
+        List<Shares> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper(Shares.class));
+        return list!=null?list.get(0):null;
+    }
 }

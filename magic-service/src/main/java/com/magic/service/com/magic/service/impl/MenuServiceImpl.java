@@ -1,14 +1,14 @@
 package com.magic.service.com.magic.service.impl;
 
+import com.magic.annotation.SystemServiceLog;
 import com.magic.dao.MenuDao;
 import com.magic.entity.Menu;
 import com.magic.service.MenuService;
 import com.magic.utils.PageBean;
-import com.magic.utils.ResultVo;
+import com.magic.common.ResultVo;
 import com.magic.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,29 +25,28 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 @Service
-@Transactional(readOnly = true)
+@Transactional(propagation= Propagation.REQUIRED)
 public class MenuServiceImpl implements MenuService {
     @Autowired
     private MenuDao menuDao;
 
     @Override
-    @Transactional(readOnly = false,propagation= Propagation.REQUIRED)
+    @Transactional(propagation= Propagation.REQUIRED)
+    @SystemServiceLog(module = "magic",option = "添加菜单",description = "添加菜单")
     public ResultVo<Menu> addMenu(Menu menu) {
         ResultVo<Menu> resultVo = new ResultVo<Menu>();
         menu.setId(UUIDUtils.getUUID());
         menu.setCreateTime(new Date());
         resultVo.setData(menu);
         menuDao.saveMenu(menu);
-       // menu.setId("123123132");
-
-       // menuDao.saveMenu(menu);
         resultVo.setState(ResultVo.SUCCESS);
         resultVo.setMessage(ResultVo.SUCCESS_MESSAGE);
         return resultVo;
     }
 
     @Override
-    @Transactional(readOnly = false,propagation= Propagation.REQUIRED)
+    @Transactional(propagation= Propagation.REQUIRED)
+    @SystemServiceLog(module = "magic",option = "修改菜单",description = "修改菜单")
     public ResultVo<Menu> updateMenu(Menu menu) {
         ResultVo<Menu> resultVo = new ResultVo<Menu>();
         resultVo.setData(menu);
@@ -58,13 +57,24 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
-    @Transactional(readOnly = false,propagation= Propagation.REQUIRED)
-    public ResultVo<Menu> deleteMenuByUpdate(String menuIds) {
-        return null;
+    @Transactional(propagation= Propagation.REQUIRED)
+    @SystemServiceLog(module = "magic",option = "删除菜单",description = "删除菜单（逻辑删除）")
+    public ResultVo<Menu> deleteMenuByUpdate(String[] menuIds) {
+        ResultVo<Menu> resultVo = new ResultVo<Menu>();
+        String ids = "";
+        for(String id:menuIds){
+            ids += "'"+id +"',";
+        }
+        ids = ids.substring(0,ids.length()-1);
+        resultVo.setData(menuDao.deleteMenuByUpdate(ids));
+        resultVo.setState(ResultVo.SUCCESS);
+        resultVo.setMessage(ResultVo.SUCCESS_MESSAGE);
+        return resultVo;
     }
 
     @Override
-    @Transactional(readOnly = false,propagation= Propagation.REQUIRED)
+    @Transactional(propagation= Propagation.REQUIRED)
+    @SystemServiceLog(module = "magic",option = "删除菜单",description = "删除菜单（物理删除）")
     public ResultVo<Menu> deleteMenuByDelete(String[] menuIds) {
 
         ResultVo<Menu> resultVo = new ResultVo<Menu>();
@@ -90,13 +100,14 @@ public class MenuServiceImpl implements MenuService {
     }
 
     @Override
+    @SystemServiceLog(module = "magic",option = "菜单列表查询",description = "菜单管理列表页查询")
     public PageBean<Menu> queryMenus(Menu menu, PageBean pageBean) {
         PageBean<Menu> resultPageBean = new PageBean<Menu>();
         List<Menu> resultList = menuDao.queryMenus(menu,pageBean);
         int count = menuDao.queryMenusCount(menu);
         resultPageBean.setRows(resultList);
         resultPageBean.setTotal(count);
-        resultPageBean.setCode(0);
+        resultPageBean.setResultCode(0);
         return resultPageBean;
     }
 

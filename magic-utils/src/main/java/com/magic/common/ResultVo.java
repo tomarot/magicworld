@@ -1,4 +1,4 @@
-package com.magic.utils;
+package com.magic.common;
 
 import java.util.List;
 

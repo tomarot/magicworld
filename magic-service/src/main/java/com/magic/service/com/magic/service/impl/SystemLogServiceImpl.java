@@ -1,15 +1,13 @@
 package com.magic.service.com.magic.service.impl;
 
 import com.magic.dao.SystemLogDao;
-import com.magic.entity.Menu;
 import com.magic.entity.SystemLog;
 import com.magic.service.SystemLogService;
-import com.magic.utils.ResultVo;
-import com.magic.utils.UUIDUtils;
+import com.magic.common.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +17,7 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 @Service
+@Transactional(propagation= Propagation.REQUIRED)
 public class SystemLogServiceImpl implements SystemLogService{
     @Autowired
     private SystemLogDao systemLogDao;

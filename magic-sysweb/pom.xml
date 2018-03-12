@@ -28,4 +28,37 @@
     <build>
         <finalName>magic-sysweb</finalName>
     </build>
+    <profiles>
+        <!--开发环境-->
+        <profile>
+            <id>develop</id>
+            <properties>
+               <!-- <magic.jdbc.url>jdbc:mysql://localhost:3306/magic</magic.jdbc.url>
+                <magic.jdbc.driverClassName>com.mysql.jdbc.Driver</magic.jdbc.driverClassName>
+                <magic.jdbc.username>admin</magic.jdbc.username>
+                <magic.jdbc.password>admin</magic.jdbc.password>
+                <magic.jdbc.maxPoolSize>20</magic.jdbc.maxPoolSize>
+                <magic.jdbc.minPoolSize>5</magic.jdbc.minPoolSize>
+                <magic.jdbc.initialPoolSize>5</magic.jdbc.initialPoolSize>
+                <magic.jdbc.maxIdleTime>60</magic.jdbc.maxIdleTime>
+                <magic.jdbc.acquireIncrement>5</magic.jdbc.acquireIncrement>
+                <magic.jdbc.maxStatements>5</magic.jdbc.maxStatements>
+                <magic.jdbc.idleConnectionTestPeriod>60</magic.jdbc.idleConnectionTestPeriod>-->
+            </properties>
+        </profile>
+        <!--测试环境-->
+        <profile>
+            <id>test</id>
+            <properties>
+
+            </properties>
+        </profile>
+        <!--生产环境-->
+        <profile>
+            <id>production</id>
+            <properties>
+
+            </properties>
+        </profile>
+    </profiles>
 </project>

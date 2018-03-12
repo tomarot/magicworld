@@ -1,7 +1,7 @@
 package com.magic.service;
 
 import com.magic.entity.Expect;
-import com.magic.utils.ResultVo;
+import com.magic.common.ResultVo;
 
 import java.util.List;
 

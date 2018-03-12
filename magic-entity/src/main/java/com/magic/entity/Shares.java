@@ -9,7 +9,7 @@ package com.magic.entity;
  */
 public class Shares extends BaseEntity{
 
-    private Integer id;  //数据编号
+    private String id;  //数据编号
     private String name; //股票名称
     private String code; //股票代码
 
@@ -17,11 +17,11 @@ public class Shares extends BaseEntity{
     private String startDate;
     private String endDate;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,23 +1,23 @@
 package com.magic.controller;
 
-import com.magic.entity.DataCheck;
-import com.magic.entity.Expect;
-import com.magic.entity.Shares;
-import com.magic.service.ExpectService;
-import com.magic.service.ShareDataCheckService;
-import com.magic.service.SharePortraitService;
-import com.magic.service.SharesService;
-import com.magic.utils.DateUtil;
+import com.magic.annotation.SystemControllerLog;
+import com.magic.entity.*;
+import com.magic.service.*;
 import com.magic.utils.PageBean;
-import com.magic.utils.ResultVo;
+import com.magic.common.ResultVo;
+import com.magic.vo.KChartDataVo;
+import com.magic.vo.SharesGameRecordVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +39,8 @@ public class SharesController {
     private SharePortraitService sharePortraitService;
     @Autowired
     ShareDataCheckService shareDataCheckService;
+    @Autowired
+    private SharesHistoryDataService sharesHistoryDataService;
 
     @RequestMapping("toSharesManagerPage.do")
     public String sharesManagerPage(){
@@ -192,4 +194,137 @@ public class SharesController {
         return "redirect:/shares/toOperationDataCheckPage.do";
     }
     /* 选点 结束 */
+    /* 股票历史数据 开始*/
+
+    /**
+     * 跳转股票历史数据管理页面
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     */
+    @RequestMapping("toSharesHistoryDataPage.do")
+    public String toSharesHistoryDataPage(HttpServletRequest request, HttpServletResponse response,Model model){
+        return "shares/sharesHistory/sharesHistoryDataManager";
+    }
+
+    /* 获取菜单列表 */
+    @RequestMapping("getSharesHistoryDataList.do")
+    @SystemControllerLog(module = "magic",option = "查询股票历史数据列表",description = "分页查询股票历史数据")
+    @ResponseBody
+    public PageBean<SharesHistoryData> getSharesHistoryDataList(SharesHistoryData sharesHistoryData, HttpServletRequest request, Model model){
+        PageBean<SharesHistoryData> resultPageBean = sharesHistoryDataService.querySharesHistoryData(sharesHistoryData);
+        return resultPageBean;
+    }
+
+    /**
+     * 导入数据
+     * @param file
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     */
+    @RequestMapping("importSharesHistoryData.do")
+    @ResponseBody
+    @SystemControllerLog(module = "magic",option = "数据导入",description = "股票历史数据导入")
+    public ResultVo toImportSharesHistoryDataPage(@RequestParam(value = "file", required = true) MultipartFile file, HttpServletRequest request, HttpServletResponse response, Model model){
+        ResultVo resultVo = sharesHistoryDataService.impSharesHistoryData(file);
+        return resultVo;
+    }
+    /* 股票历史数据 结束*/
+    /* 股票数据K线展示 开始*/
+
+    /**
+     *
+     * 股票K线图展示页面
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     */
+    @RequestMapping("toKChartShowPage.do")
+    public String toKChartShowPage(HttpServletRequest request, HttpServletResponse response,Model model){
+//        List<Shares> list = sharesService.querySharesList();
+//        model.addAttribute("shareList",list);
+        /*shareDataCheckService.getDataCheck();*/
+        return "shares/sharesKChart/kChartShow";
+    }
+    @RequestMapping("KChartShow.do")
+    @SystemControllerLog(module = "magic",option = "查看股票K线数据",description = "查看股票K线数据")
+    @ResponseBody
+    public KChartDataVo KChartShow(SharesHistoryData sharesHistoryData, HttpServletRequest request, Model model){
+//        PageBean<SharesHistoryData> resultPageBean = sharesHistoryDataService.querySharesHistoryData(sharesHistoryData);
+        KChartDataVo kChartDataVo = sharesHistoryDataService.queryKChartData(sharesHistoryData);
+        return kChartDataVo;
+    }
+    /* 股票数据K线展示 结束*/
+
+    /* 股票实盘交易模拟 开始*/
+    /**
+     * 实盘交易模拟页面
+     * @return
+     */
+    @RequestMapping("toSharesDealSimulationListPage.do")
+    public String toSharesDealSimulationListPage(){
+        //return "shares/sharesDealSimulation/sharesDealSimulationPage";
+        return "shares/sharesDealSimulation/sharesDealSimulationManager";
+    }
+    /**
+     * 获取游戏模拟记录列表
+     * @param sharesGameRecordVo
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("getSharesDealSimulationList.do")
+    @ResponseBody
+    public PageBean<SharesGameRecordVo> getSharesDealSimulationList(SharesGameRecordVo sharesGameRecordVo, HttpServletRequest request, Model model){
+        //PageBean<Dictionary> resultPageBean = dictionaryService.queryDictionary(dictionary,pageBean);
+        PageBean<SharesGameRecordVo> resultPageBean = sharesService.getSharesDealSimulationList(sharesGameRecordVo);
+        return resultPageBean;
+    }
+
+    /**
+     * 新建模拟游戏练习
+     * @param request
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("generatorSharesDealGame.do")
+    @ResponseBody
+    public ResultVo generatorSharesDealGame(HttpServletRequest request,HttpSession session, Model model){
+        //PageBean<Dictionary> resultPageBean = dictionaryService.queryDictionary(dictionary,pageBean);
+        ResultVo resultVo = sharesService.generatorSharesDealGame(request,session);
+        return resultVo;
+    }
+
+    /**
+     * 实盘交易模拟页面
+     * @return
+     */
+    @RequestMapping("toSharesDealSimulationPage.do")
+    public String toSharesDealSimulationPage(String gameCode,Model model){
+        model.addAttribute("gameCode",gameCode);
+        return "shares/sharesDealSimulation/sharesDealSimulationPage";
+    }
+
+    /**
+     * 获取游戏的K线数据
+     * @param gameCode
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("getGameKChartData.do")
+    @SystemControllerLog(module = "magic",option = "获取股票数据",description = "获取模拟游戏对应的股票数据")
+    @ResponseBody
+    public KChartDataVo getGameKChartData(String gameCode,String next, HttpServletRequest request, Model model){
+       // KChartDataVo kChartDataVo = sharesHistoryDataService.queryKChartData(sharesHistoryData);
+        KChartDataVo kChartDataVo = sharesHistoryDataService.queryGameKChartData(gameCode,next);
+        return kChartDataVo;
+    }
+
+    /* 股票实盘交易模拟 结束*/
 }

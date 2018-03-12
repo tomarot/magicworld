@@ -3,7 +3,7 @@ package com.magic.service.com.magic.service.impl;
 import com.magic.dao.ExpectDao;
 import com.magic.entity.Expect;
 import com.magic.service.ExpectService;
-import com.magic.utils.ResultVo;
+import com.magic.common.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

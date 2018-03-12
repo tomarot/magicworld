@@ -2,7 +2,7 @@ package com.magic.service;
 
 import com.magic.entity.Menu;
 import com.magic.utils.PageBean;
-import com.magic.utils.ResultVo;
+import com.magic.common.ResultVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public interface MenuService {
      * @param menuIds
      * @return
      */
-    public ResultVo<Menu> deleteMenuByUpdate(String menuIds);
+    public ResultVo<Menu> deleteMenuByUpdate(String[] menuIds);
 
     /**
      * 批量删除菜单（物理删除）

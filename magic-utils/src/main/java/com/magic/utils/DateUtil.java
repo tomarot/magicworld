@@ -96,7 +96,7 @@ public class DateUtil {
      * @return 格式化后的日期
      * @throws java.text.ParseException
      */
-    public final static String formatDate2Date(String inDate, String format)
+    public final static String formatString2String(String inDate, String format)
 	    throws ParseException {
 	String strDate = "";
 	Date date = string2UtilDate(inDate);

@@ -2,10 +2,9 @@ package com.magic.controller;
 
 import com.magic.annotation.SystemControllerLog;
 import com.magic.entity.Menu;
-import com.magic.entity.User;
 import com.magic.service.MenuService;
 import com.magic.utils.PageBean;
-import com.magic.utils.ResultVo;
+import com.magic.common.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,6 +42,7 @@ public class MenuController {
     }
     /* 获取菜单列表 */
     @RequestMapping("getMenusList.do")
+    @SystemControllerLog(module = "magic",option = "查询菜单列表",description = "分页查询菜单列表")
     @ResponseBody
     public PageBean<Menu> getMenusList(Menu menu,PageBean pageBean,HttpServletRequest request,Model model){
         PageBean<Menu> resultPageBean = menuService.queryMenus(menu,pageBean);
@@ -60,7 +59,7 @@ public class MenuController {
     }
     /* 增改操作数据 */
     @RequestMapping("operatorMenus.do")
-    @SystemControllerLog(description = "增改菜单")
+    @SystemControllerLog(module = "magic",option = "增改菜单",description = "增改菜单")
     @ResponseBody
     public ResultVo operatorMenus(Menu menu,PageBean pageBean,HttpServletRequest request,Model model){
         ResultVo vo =  null;
@@ -74,11 +73,11 @@ public class MenuController {
     }
     /* 删除数据数据 */
     @RequestMapping("deleteMenuPage.do")
-    @SystemControllerLog(description = "删除菜单")
+    @SystemControllerLog(module = "magic",option = "删除菜单",description = "删除菜单")
     @ResponseBody
     public ResultVo deleteMenus(String[] menuIds,PageBean pageBean,HttpServletRequest request,Model model){
         ResultVo vo =  null;
-        vo = menuService.deleteMenuByDelete(menuIds);
+        vo = menuService.deleteMenuByUpdate(menuIds);
         return vo;
     }
 

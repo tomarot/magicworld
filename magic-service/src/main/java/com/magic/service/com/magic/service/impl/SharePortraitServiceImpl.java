@@ -5,7 +5,7 @@ import com.magic.entity.SharePortrait;
 import com.magic.entity.Shares;
 import com.magic.service.SharePortraitService;
 import com.magic.service.SharesService;
-import com.magic.utils.ResultVo;
+import com.magic.common.ResultVo;
 import com.magic.vo.BasicLineChartVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

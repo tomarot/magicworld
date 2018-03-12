@@ -11,8 +11,8 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class PageBean<T> {
-    public int page = 1;
-    public int limit = 10;
+    public int page = 1;//页码
+    public int limit = 10;//一页多少条
     /** 行实体类 */
     private List<T> rows = new ArrayList<T>();
     private List<T> data = new ArrayList<T>();
@@ -22,7 +22,7 @@ public class PageBean<T> {
     private int count;
 
 
-    private int code;
+    private int resultCode;//結果状态码
 
     private String msg;
 
@@ -80,12 +80,12 @@ public class PageBean<T> {
         this.msg = msg;
     }
 
-    public int getCode() {
-        return code;
+    public int getResultCode() {
+        return resultCode;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setResultCode(int resultCode) {
+        this.resultCode = resultCode;
     }
 
     public int getLimit() {

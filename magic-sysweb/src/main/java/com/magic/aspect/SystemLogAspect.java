@@ -102,7 +102,7 @@ public class SystemLogAspect {
             e.printStackTrace();
             //记录本地异常日志
             logger.error("==前置通知异常==");
-           // logger.error("异常信息:{}", e.getMessage());
+            e.printStackTrace();
         }
     }
     /**
@@ -123,7 +123,19 @@ public class SystemLogAspect {
         String params = "";
         if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {
             for ( int i = 0; i < joinPoint.getArgs().length; i++) {
-                params += JSONUtil.toJSONString(joinPoint.getArgs()[i]) + ";";
+                if(joinPoint.getArgs()[i] instanceof String){
+                    params += joinPoint.getArgs()[i] + ";";
+                    continue;
+                }else if(joinPoint.getArgs()[i] instanceof Integer){
+                    params += joinPoint.getArgs()[i] + ";";
+                    continue;
+                }else if(joinPoint.getArgs()[i] instanceof Double){
+                    params += joinPoint.getArgs()[i] + ";";
+                    continue;
+                }else{
+                    params += JSONUtil.toJSONString(joinPoint.getArgs()[i]) + ";";
+                }
+
             }
         }
         try {
@@ -156,7 +168,7 @@ public class SystemLogAspect {
         }  catch (Exception e) {
             //记录本地异常日志
             logger.error("==前置通知异常==");
-//            logger.error("异常信息:{}", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -177,16 +189,28 @@ public class SystemLogAspect {
         String params = "";
         if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {
             for ( int i = 0; i < joinPoint.getArgs().length; i++) {
-                params += JSONUtil.toJSONString(joinPoint.getArgs()[i]) + ";";
+                if(joinPoint.getArgs()[i] instanceof String){
+                    params += joinPoint.getArgs()[i] + ";";
+                    continue;
+                }else if(joinPoint.getArgs()[i] instanceof Integer){
+                    params += joinPoint.getArgs()[i] + ";";
+                    continue;
+                }else if(joinPoint.getArgs()[i] instanceof Double){
+                    params += joinPoint.getArgs()[i] + ";";
+                    continue;
+                }else{
+                    params += JSONUtil.toJSONString(joinPoint.getArgs()[i]) + ";";
+                }
             }
         }
+
         try {
             Map<String,Object> resultMap = getServiceMethodAnnotationValue(joinPoint);
             String module = (String)resultMap.get("module");
             String option = (String)resultMap.get("option");
             String description = (String)resultMap.get("description");
             /*========控制台输出=========*/
-            logger.info("=====异常通知开始=====");
+//            logger.info("=====异常通知开始=====");
             logger.info("异常代码:" + e.getClass().getName());
             logger.info("异常信息:" + e.getMessage());
             logger.info("异常方法:" + (joinPoint.getTarget().getClass().getName() + "." + joinPoint.getSignature().getName() + "()"));
@@ -208,16 +232,12 @@ public class SystemLogAspect {
             log.setUserIp(ip);
             //保存数据库
             systemLogService.addSystemLog(log);
-            logger.info("=====异常通知结束=====");
+//            logger.info("=====异常通知结束=====");
         }  catch (Exception ex) {
-            e.printStackTrace();
             //记录本地异常日志
             logger.error("==异常通知异常==");
-//            logger.error("异常信息:{}", ex.getMessage());
+            e.printStackTrace();
         }
-        /*==========记录本地异常日志==========*/
-//        logger.error("异常方法:{}异常代码:{}异常信息:{}参数:{}", joinPoint.getTarget().getClass().getName() + joinPoint.getSignature().getName(), e.getClass().getName(), e.getMessage(), params);
-
     }
 
     /**

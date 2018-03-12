@@ -1,10 +1,8 @@
 package com.magic.service;
 
 
-import com.magic.dao.SharePortraitDao;
 import com.magic.entity.SharePortrait;
-import com.magic.utils.ResultVo;
-import org.springframework.stereotype.Service;
+import com.magic.common.ResultVo;
 
 import java.util.List;
 

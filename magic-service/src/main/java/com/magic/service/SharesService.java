@@ -1,8 +1,12 @@
 package com.magic.service;
 
+import com.magic.common.ResultVo;
 import com.magic.entity.Shares;
 import com.magic.utils.PageBean;
+import com.magic.vo.SharesGameRecordVo;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -40,4 +44,20 @@ public interface SharesService {
      * @return
      */
     public Shares getShares(String code);
+
+    /**
+     * 获取股票模拟练习列表
+     * 分页模式
+     * @param sharesGameRecordVo
+     * @return
+     */
+    public PageBean<SharesGameRecordVo> getSharesDealSimulationList(SharesGameRecordVo sharesGameRecordVo);
+
+    /**
+     * 新建游戏模拟记录
+     * @param request
+     * @param session
+     * @return
+     */
+    public ResultVo generatorSharesDealGame(HttpServletRequest request, HttpSession session);
 }

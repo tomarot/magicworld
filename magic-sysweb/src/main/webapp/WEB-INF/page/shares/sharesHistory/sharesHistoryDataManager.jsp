@@ -24,35 +24,27 @@
         <form id="queryForm" class="layui-form layui-form-pane" action="">
             <div style="margin-top: 10px;">
                 <div class="layui-form-item" style="width: 310px;float:left;clear: none;">
-                    <label class="layui-form-label">菜单名称</label>
+                    <label class="layui-form-label">股票名称</label>
                     <div class="layui-input-inline">
-                        <input id="name" type="text" name="name" placeholder="请输入菜单名称" autocomplete="off" class="layui-input">
+                        <input id="sharesName" type="text" name="sharesName" placeholder="请输入股票名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item" style="width: 310px;float:left;clear: none;">
-                    <label class="layui-form-label">菜单标识</label>
-                    <div class="layui-input-inline">
-                        <input id="rel" type="text" name="rel" placeholder="请输入菜单标识" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item" style="width: 310px;float:left;clear: none;">
-                    <label class="layui-form-label">菜单等级</label>
+                    <label class="layui-form-label">周期</label>
                     <div class="layui-input-block" style="width:190px;">
-                        <select id="level" name="level">
+                        <select id="frequency" name="frequency">
                             <option value="" selected=""></option>
-                            <option value="1" >一级</option>
-                            <option value="2">二级</option>
-                            <option value="3">三级</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-form-item" style="width: 310px;float:left;clear: none;">
-                    <label class="layui-form-label">菜单状态</label>
-                    <div class="layui-input-block" style="width:190px;">
-                        <select id="state" name="state">
-                            <option value="" selected=""></option>
-                            <option value="1" >启用</option>
-                            <option value="2">禁用</option>
+                            <option value="1" >年</option>
+                            <option value="2">季</option>
+                            <option value="3">月</option>
+                            <option value="4" >周</option>
+                            <option value="5">日</option>
+                            <option value="6">120分</option>
+                            <option value="7" >60分</option>
+                            <option value="8">30分</option>
+                            <option value="9">15分</option>
+                            <option value="10" >5分</option>
+                            <option value="11">1分</option>
                         </select>
                     </div>
                 </div>
@@ -67,9 +59,10 @@
     <div class="data-part">
         <div style="margin-top: 5px;">
             <div class="layui-btn-group">
-                <button id="addBtn" class="layui-btn layui-btn-normal layui-btn-sm">增加</button>
+               <%-- <button id="addBtn" class="layui-btn layui-btn-normal layui-btn-sm">增加</button>
                 <button id="updateBtn" class="layui-btn layui-btn-normal layui-btn-sm">编辑</button>
-                <button id="deleteBtn" class="layui-btn layui-btn-normal layui-btn-sm">删除</button>
+                <button id="deleteBtn" class="layui-btn layui-btn-normal layui-btn-sm">删除</button>--%>
+                <button id="impBtn" class="layui-btn layui-btn-normal layui-btn-sm">execl导入数据</button>
             </div>
         </div>
         <table class="layui-hide" id="dataTable"></table>
@@ -81,33 +74,34 @@
 <script src="/common/common_layui.js"></script>
 <script>
 ;!function(){
-   /* var form;
-    var table;
-    layui.use('form', function(){*/
         var form = layui.form;
-//    });
-//    layui.use('table', function(){
         var table = layui.table;
+        var upload = layui.upload;
         var dataTableObj = table.render({
             id:'dataTable',
             elem: '#dataTable',
             height: 'full-200',
             method:'post',
-            url:'/menu/getMenusList.do',
+            url:'/shares/getSharesHistoryDataList.do',
             cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
             cols: [[
                 {type:'checkbox'},
                 /*{field:'id', width:80, title: 'ID', align:'center'},*/
-                {field:'name', width:100, title: '菜单名称', align:'center'},
-                {field:'rel', width:100, title: '菜单标识', align:'center'},
-               /* {field:'parentId', width:100, title: '父级菜单', align:'center'},*/
-                {field:'url', width:240, title: '菜单url', align:'center'},
-                {field:'icon', width:110, title: '菜单图标', align:'center'},
-                {field:'level', width:100, title: '菜单等级', align:'center'},
-                {field:'order', width:100, title: '菜单顺序', align:'center'},
-                {field:'state', width:100, title: '状态', align:'center'},
-                {field:'createTime', width:100, title: '创建时间', align:'center',templet:'<div>{{ layui.laytpl.toDateString(d.createTime) }}</div>'},
-                {field:'updateTime', width:100, title: '修改时间', align:'center',templet:'<div>{{ layui.laytpl.toDateString(d.updateTime) }}</div>'}
+                {field:'sharesName', width:100, title: '股票名称', align:'center'},
+                {field:'frequency', width:100, title: '数据周期', align:'center'},
+                {field:'startPrice', width:100, title: '开盘价', align:'center'},
+                {field:'highPrice', width:110, title: '最高价', align:'center'},
+                {field:'lowPrice', width:100, title: '最低价', align:'center'},
+                {field:'endPrice', width:100, title: '收盘价', align:'center'},
+                {field:'upVal', width:100, title: '涨幅', align:'center'},
+                {field:'amplitude', width:100, title: '振幅', align:'center'},
+                {field:'countNum', width:100, title: '总手', align:'center'},
+                {field:'countMoney', width:100, title: '金额', align:'center'},
+                {field:'changedHands', width:100, title: '换手', align:'center'},
+                {field:'volamount', width:100, title: '成交次数', align:'center'},
+                {field:'dataTime', width:200, title: '数据时间', align:'center',templet:'<div>{{ layui.laytpl.toDateString(d.dataTime,"yyyy-MM-dd") }}</div>'},
+                {field:'createTime', width:200, title: '创建时间', align:'center',templet:'<div>{{ layui.laytpl.toDateString(d.createTime) }}</div>'}/*,
+                {field:'updateTime', width:100, title: '修改时间', align:'center',templet: '#titleTpl'}*/
             ]],
             page: true,
             request: {
@@ -122,6 +116,21 @@
                 dataName: 'data', //数据列表的字段名称，默认：data
             }
         });
+        /* 导入数据 */
+        upload.render({
+            elem: '#impBtn',
+            url: '/shares/importSharesHistoryData.do',
+            accept:'file',
+            exts:'xls|xlsx',
+            field:'file',
+            done: function(res, index, upload){
+                //获取当前触发上传的元素，一般用于 elem 绑定 class 的情况，注意：此乃 layui 2.1.0 新增
+                var item = this.item;
+            },
+            error:function(index,upload){
+
+            }
+        })
 //    });
     /*事件绑定*/
     $("#resetBtn").click(resetQueryForm);
@@ -135,9 +144,9 @@
     function queryQueryForm(){
         dataTableObj.reload({
             where: { //设定异步数据接口的额外参数，任意设
-                name:$("#name").val(),
+                sharesName:$("#sharesName").val(),
                 rel:$("#rel").val(),
-                level:$("#level option:selected").val(),
+                frequency:$("#frequency option:selected").val(),
                 state:$("#state option:selected").val()
             }
             ,page: {
@@ -210,22 +219,6 @@
                  });
              }
          });
-        /* layer.confirm('确定要删除此数据？', {
-             btn: ['确定','我再想想'] //按钮
-         }, function(){
-             $.ajax({
-                 url:"/menu/deleteMenuPage.do",
-                 type:"POST",
-                 async:false,
-                 data:{id:checkStatus.data[0].id},
-                 dataType:"json",
-                 success:function(data){
-                     reloadDataTable();
-                 }
-             });
-         }, function(){
-
-         });*/
      });
     //刷新数据表格
     window.reloadDataTable = function reloadDataTable(){

@@ -30,7 +30,7 @@ public class MenuDao {
      * @return
      */
     public List<Menu> getChildMenus(String parentId){
-        String sql = "select * from menu where parentid = ? order by 'order'";
+        String sql = "select * from menu where parentid = ? and isdel = '1' order by 'order'";
         List<Menu> list = jdbcTemplate.query(sql,new Object[]{parentId},new BeanPropertyRowMapper(Menu.class));
         return list;
     }
@@ -42,6 +42,7 @@ public class MenuDao {
         if(!StringUtils.isEmpty(menu.getState())){
             sql.append(" and t.state = '"+menu.getState()+"' ");
         }
+        sql.append(" and t.isdel = '1' ");
         sql.append(" order by 'order' desc ");
         List<Menu> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper(Menu.class));
         return list;
@@ -60,6 +61,7 @@ public class MenuDao {
         if(!StringUtils.isEmpty(menu.getState())){
             sql.append(" and t.state = '"+menu.getState()+"' ");
         }
+        sql.append(" and t.isdel = '1' ");
         int count = jdbcTemplate.queryForObject(sql.toString(),Integer.class).intValue();
         return count;
     }
@@ -77,6 +79,7 @@ public class MenuDao {
         if(!StringUtils.isEmpty(menu.getState())){
             sql.append(" and t.state = '"+menu.getState()+"' ");
         }
+        sql.append(" and t.isdel = '1' ");
         sql.append(" order by createTime desc ");
         sql.append(" limit "+pageBean.getStartRowNum()+","+pageBean.getEndRowNum()+" ");
         List<Menu> list = jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper(Menu.class));
@@ -103,6 +106,11 @@ public class MenuDao {
     public int deleteMenu(String ids){
         StringBuilder sql = new StringBuilder("");
         sql.append("delete from menu where id in ("+ids+")");
+        return jdbcTemplate.update(sql.toString());
+    }
+    public int deleteMenuByUpdate(String ids){
+        StringBuilder sql = new StringBuilder("");
+        sql.append("update menu set isdel = '0' where id in ("+ids+")");
         return jdbcTemplate.update(sql.toString());
     }
 }

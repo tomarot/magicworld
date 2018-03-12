@@ -182,8 +182,6 @@
 <script type="text/javascript" src="/library/public/js/contabs.min.js"></script>
 <script src="/library/pace/js/pace.min.js"></script>
 <script type="text/javascript">
-    //    var h=$(window).height()-80+"px";
-    //    $("#content-main").css("height",h);
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
     });
@@ -191,26 +189,6 @@
         mini_nav();
         initMenu();
         $('.J_tabExit').click(function () {
-           /* $.ajax({
-                url: "/index.php?m=Admin&c=Login&a=logout",
-                type: 'get',
-                dataType: 'json',
-                success: function (result) {
-                    var info = result.info;
-                    var url = result.url;
-                    if (url) {
-                        window.location.href = url;
-                    } else {
-                        swal({
-                            title: info,
-                            text: '',
-                            type: 'error',
-                            timer: 1000,
-                            showConfirmButton: false
-                        });
-                    }
-                }
-            });*/
         });
         $("#side-menu li a").click(function(){
             mini_nav();
@@ -256,37 +234,6 @@
                         }
                         window.initBindEvent();//初始化绑定事件
                     }
-                    /*<li>
-                        <a href="javascript:;"><i class="fa fa-folder"></i>
-                            <span class="nav-label">任务列表</span>
-                            <span class="fa arrow"></span>
-                        </a>
-                        <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                            <li>
-                                <a class="J_menuItem" href="/index.php?m=Admin&c=TaskList&a=index" data-index="5">任务列表</a>
-                            </li>
-                            <li>
-                                 <a href="javascript:;"><i class="fa fa-folder"></i>
-                                 <span class="nav-label">子级任务列表</span>
-                                 <span class="fa arrow"></span>
-                                 </a>
-                                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                                     <li>
-                                        <a class="J_menuItem" href="/index.php?m=Admin&c=TaskList&a=index" data-index="5">任务列表</a>
-                                     </li>
-                                     <li>
-                                        <a class="J_menuItem" href="/index.php?m=Admin&c=TaskList&a=dellist" data-index="5">已删除列表</a>
-                                     </li>
-                                 </ul>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="/index.php?m=Admin&c=Sample&a=whitelist" data-index="4">解除限制</a>
-                            </li>
-                            <li>
-                                <a class="J_menuItem" href="/index.php?m=Admin&c=TaskList&a=checklist" data-index="5">数据查询</a>
-                            </li>
-                        </ul>
-                    </li>*/
                 }else{
                     alert("初始化菜单失败");
                 }

@@ -1,7 +1,7 @@
 package com.magic.service;
 
 import com.magic.entity.SystemLog;
-import com.magic.utils.ResultVo;
+import com.magic.common.ResultVo;
 
 /**
  * Created with IntelliJ IDEA.
