@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.dao.SharesAccountInfoMapper">
+  <resultMap id="BaseResultMap" type="com.magic.entity.SharesAccountInfo">
+    <constructor>
+      <idArg column="id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="userid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="accountname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="initmoney" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="availablemoney" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="isdel" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="updatetime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, userid, accountname, initmoney, availablemoney, isdel, createtime, updatetime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from gp_accountinfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from gp_accountinfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.magic.entity.SharesAccountInfo">
+    insert into gp_accountinfo (id, userid, accountname, 
+      initmoney, availablemoney, isdel, 
+      createtime, updatetime)
+    values (#{id,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{accountname,jdbcType=VARCHAR}, 
+      #{initmoney,jdbcType=DOUBLE}, #{availablemoney,jdbcType=DOUBLE}, #{isdel,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magic.entity.SharesAccountInfo">
+    insert into gp_accountinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="accountname != null">
+        accountname,
+      </if>
+      <if test="initmoney != null">
+        initmoney,
+      </if>
+      <if test="availablemoney != null">
+        availablemoney,
+      </if>
+      <if test="isdel != null">
+        isdel,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="accountname != null">
+        #{accountname,jdbcType=VARCHAR},
+      </if>
+      <if test="initmoney != null">
+        #{initmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="availablemoney != null">
+        #{availablemoney,jdbcType=DOUBLE},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.entity.SharesAccountInfo">
+    update gp_accountinfo
+    <set>
+      <if test="userid != null">
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="accountname != null">
+        accountname = #{accountname,jdbcType=VARCHAR},
+      </if>
+      <if test="initmoney != null">
+        initmoney = #{initmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="availablemoney != null">
+        availablemoney = #{availablemoney,jdbcType=DOUBLE},
+      </if>
+      <if test="isdel != null">
+        isdel = #{isdel,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

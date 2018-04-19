@@ -11,12 +11,12 @@ import java.util.List;
  */
 public class ResultVo<T> {
 
-    public static String SUCCESS = "200";
-    public static String FAILED = "500";
+    public static int SUCCESS = 200;
+    public static int FAILED = 500;
     public static String SUCCESS_MESSAGE = "操作成功";
     public static String FAILED_MESSAGE = "操作失败";
 
-    private String state;    //状态
+    private int state;    //状态
     private String message;  //信息
     private List<T> dataList;//集合数据
     private Object data;//单条数据
@@ -26,16 +26,16 @@ public class ResultVo<T> {
         this.message = ResultVo.FAILED_MESSAGE;
     }
 
-    public ResultVo(String state,String message) {
+    public ResultVo(int state,String message) {
         this.state = state;
         this.message = message;
     }
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
     }
 

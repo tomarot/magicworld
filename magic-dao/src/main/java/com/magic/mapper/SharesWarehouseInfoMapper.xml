@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.dao.SharesWarehouseInfoMapper">
+  <resultMap id="BaseResultMap" type="com.magic.entity.SharesWarehouseInfo">
+    <constructor>
+      <idArg column="id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sharesid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="accountid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="num" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="cost" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="isdel" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="updatetime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sharesid, accountid, num, cost, isdel, createtime, updatetime
+  </sql>
+  <sql id="Vo_Column_List">
+    id, sharesid, accountid, num, cost, isdel, createtime, updatetime
+  </sql>
+  <sql id="Vo_Column_Where">
+
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from gp_warehouseinfo
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBySelective" resultType="com.magic.vo.SharesWarehouseInfoVo" parameterType="com.magic.vo.SharesWarehouseInfoVo">
+    select
+    <include refid="Vo_Column_List" />
+    from gp_warehouseinfo
+    where 1=1
+    <if test="sharesid != null and sharesid != ''">
+      and sharesid = #{sharesid,jdbcType=VARCHAR}
+    </if>
+    <if test="accountid != null and sharesid != ''">
+      and accountid = #{accountid,jdbcType=VARCHAR}
+    </if>
+    <if test="num != null">
+      and num = #{num,jdbcType=DOUBLE}
+    </if>
+    <if test="cost != null">
+      and cost = #{cost,jdbcType=DOUBLE}
+    </if>
+    <if test="isdel != null and sharesid != ''">
+      and isdel = #{isdel,jdbcType=VARCHAR}
+    </if>
+    <if test="createtime != null">
+      and createtime = #{createtime,jdbcType=TIMESTAMP}
+    </if>
+    <if test="updatetime != null">
+      and updatetime = #{updatetime,jdbcType=TIMESTAMP}
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from gp_warehouseinfo
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.magic.entity.SharesWarehouseInfo">
+    insert into gp_warehouseinfo (id, sharesid, accountid, 
+      num, cost, isdel, createtime, 
+      updatetime)
+    values (#{id,jdbcType=VARCHAR}, #{sharesid,jdbcType=VARCHAR}, #{accountid,jdbcType=VARCHAR}, 
+      #{num,jdbcType=DOUBLE}, #{cost,jdbcType=DOUBLE}, #{isdel,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magic.entity.SharesWarehouseInfo">
+    insert into gp_warehouseinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sharesid != null">
+        sharesid,
+      </if>
+      <if test="accountid != null">
+        accountid,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="cost != null">
+        cost,
+      </if>
+      <if test="isdel != null">
+        isdel,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesid != null">
+        #{sharesid,jdbcType=VARCHAR},
+      </if>
+      <if test="accountid != null">
+        #{accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=DOUBLE},
+      </if>
+      <if test="cost != null">
+        #{cost,jdbcType=DOUBLE},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.entity.SharesWarehouseInfo">
+    update gp_warehouseinfo
+    <set>
+      <if test="sharesid != null">
+        sharesid = #{sharesid,jdbcType=VARCHAR},
+      </if>
+      <if test="accountid != null">
+        accountid = #{accountid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=DOUBLE},
+      </if>
+      <if test="cost != null">
+        cost = #{cost,jdbcType=DOUBLE},
+      </if>
+      <if test="isdel != null">
+        isdel = #{isdel,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

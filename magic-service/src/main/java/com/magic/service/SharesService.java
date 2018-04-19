@@ -2,6 +2,7 @@ package com.magic.service;
 
 import com.magic.common.ResultVo;
 import com.magic.entity.Shares;
+import com.magic.entity.SharesGameRecord;
 import com.magic.utils.PageBean;
 import com.magic.vo.SharesGameRecordVo;
 
@@ -51,7 +52,7 @@ public interface SharesService {
      * @param sharesGameRecordVo
      * @return
      */
-    public PageBean<SharesGameRecordVo> getSharesDealSimulationList(SharesGameRecordVo sharesGameRecordVo);
+    public PageBean<SharesGameRecord> getSharesDealSimulationList(SharesGameRecordVo sharesGameRecordVo);
 
     /**
      * 新建游戏模拟记录

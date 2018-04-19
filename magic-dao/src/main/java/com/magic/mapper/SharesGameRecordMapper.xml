@@ -4,21 +4,7 @@
   <resultMap id="BaseResultMap" type="com.magic.entity.SharesGameRecord" >
     <constructor >
       <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="gamecode" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="sharesid" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="frequency" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="initmoney" jdbcType="DECIMAL" javaType="java.lang.Double" />
-      <arg column="currentmoney" jdbcType="DECIMAL" javaType="java.lang.Double" />
-      <arg column="userid" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="startrecordid" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="offsetnum" jdbcType="DECIMAL" javaType="java.lang.Long" />
-      <arg column="gamestate" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="createtime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-    </constructor>
-  </resultMap>
-  <resultMap id="ResultMap1" type="com.magic.vo.SharesGameRecordVo" >
-    <constructor >
-      <idArg column="id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="accountid" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="gamecode" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="sharesid" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="frequency" jdbcType="VARCHAR" javaType="java.lang.String" />
@@ -32,7 +18,7 @@
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, gamecode, sharesid, frequency, initmoney, currentmoney, userid, startrecordid, 
+    id, accountid,gamecode, sharesid, frequency, initmoney, currentmoney, userid, startrecordid,
     offsetnum, gamestate, createtime
   </sql>
   <sql id="Page_Where">
@@ -43,6 +29,9 @@
   <sql id="Base_Column_Where">
     where
     1 = 1
+    <if test="accountid != null and accountid !=''" >
+      and accountid = #{accountid,jdbcType=VARCHAR}
+    </if>
     <if test="gamecode != null and gamecode !=''" >
       and gamecode = #{gamecode,jdbcType=VARCHAR}
     </if>
@@ -80,7 +69,7 @@
     from gp_gamerecord
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectBySelective" resultMap="ResultMap1" parameterType="com.magic.vo.SharesGameRecordVo" >
+  <select id="selectBySelective" resultType="com.magic.entity.SharesGameRecord" parameterType="com.magic.vo.SharesGameRecordVo" >
     select
     <include refid="Base_Column_List" />
     from gp_gamerecord
@@ -98,11 +87,11 @@
     where id = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.magic.entity.SharesGameRecord" >
-    insert into gp_gamerecord (id, gamecode, sharesid, 
+    insert into gp_gamerecord (id,accountid, gamecode, sharesid,
       frequency, initmoney, currentmoney, 
       userid, startrecordid, offsetnum, 
       gamestate, createtime)
-    values (#{id,jdbcType=VARCHAR}, #{gamecode,jdbcType=VARCHAR}, #{sharesid,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{accountid,jdbcType=VARCHAR},#{gamecode,jdbcType=VARCHAR}, #{sharesid,jdbcType=VARCHAR},
       #{frequency,jdbcType=VARCHAR}, #{initmoney,jdbcType=DECIMAL}, #{currentmoney,jdbcType=DECIMAL},
       #{userid,jdbcType=VARCHAR}, #{startrecordid,jdbcType=VARCHAR}, #{offsetnum,jdbcType=DECIMAL}, 
       #{gamestate,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP})
@@ -112,6 +101,9 @@
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
+      </if>
+      <if test="accountid != null" >
+        accountid,
       </if>
       <if test="gamecode != null" >
         gamecode,
@@ -148,6 +140,9 @@
       <if test="id != null" >
         #{id,jdbcType=VARCHAR},
       </if>
+      <if test="accountid != null" >
+        #{accountid,jdbcType=VARCHAR},
+      </if>
       <if test="gamecode != null" >
         #{gamecode,jdbcType=VARCHAR},
       </if>
@@ -183,6 +178,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.magic.entity.SharesGameRecord" >
     update gp_gamerecord
     <set >
+      <if test="accountid != null" >
+        accountid = #{accountid,jdbcType=VARCHAR},
+      </if>
       <if test="gamecode != null" >
         gamecode = #{gamecode,jdbcType=VARCHAR},
       </if>
@@ -218,7 +216,9 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.magic.entity.SharesGameRecord" >
     update gp_gamerecord
-    set gamecode = #{gamecode,jdbcType=VARCHAR},
+    set
+      accountid = #{accountid,jdbcType=VARCHAR},
+      gamecode = #{gamecode,jdbcType=VARCHAR},
       sharesid = #{sharesid,jdbcType=VARCHAR},
       frequency = #{frequency,jdbcType=VARCHAR},
       initmoney = #{initmoney,jdbcType=DECIMAL},

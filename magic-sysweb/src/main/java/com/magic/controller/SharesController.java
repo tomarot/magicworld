@@ -6,6 +6,7 @@ import com.magic.service.*;
 import com.magic.utils.PageBean;
 import com.magic.common.ResultVo;
 import com.magic.vo.KChartDataVo;
+import com.magic.vo.SharesAccountInfoVo;
 import com.magic.vo.SharesGameRecordVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,8 +42,15 @@ public class SharesController {
     ShareDataCheckService shareDataCheckService;
     @Autowired
     private SharesHistoryDataService sharesHistoryDataService;
+    @Autowired
+    private SharesAccountInfoService sharesAccountInfoService;
+    @Autowired
+    private SharesGameRecordService sharesGameRecordService;
+    @Autowired
+    private SharesOfferBillService sharesOfferBillService;
 
-    @RequestMapping("toSharesManagerPage.do")
+
+        @RequestMapping("toSharesManagerPage.do")
     public String sharesManagerPage(){
         return "shares/sharesManager/sharesManager";
     }
@@ -279,9 +287,9 @@ public class SharesController {
      */
     @RequestMapping("getSharesDealSimulationList.do")
     @ResponseBody
-    public PageBean<SharesGameRecordVo> getSharesDealSimulationList(SharesGameRecordVo sharesGameRecordVo, HttpServletRequest request, Model model){
+    public PageBean<SharesGameRecord> getSharesDealSimulationList(SharesGameRecordVo sharesGameRecordVo, HttpServletRequest request, Model model){
         //PageBean<Dictionary> resultPageBean = dictionaryService.queryDictionary(dictionary,pageBean);
-        PageBean<SharesGameRecordVo> resultPageBean = sharesService.getSharesDealSimulationList(sharesGameRecordVo);
+        PageBean<SharesGameRecord> resultPageBean = sharesService.getSharesDealSimulationList(sharesGameRecordVo);
         return resultPageBean;
     }
 
@@ -305,8 +313,9 @@ public class SharesController {
      * @return
      */
     @RequestMapping("toSharesDealSimulationPage.do")
-    public String toSharesDealSimulationPage(String gameCode,Model model){
+    public String toSharesDealSimulationPage(String gameCode,String accountid,Model model){
         model.addAttribute("gameCode",gameCode);
+        model.addAttribute("accountid",accountid);
         return "shares/sharesDealSimulation/sharesDealSimulationPage";
     }
 
@@ -316,7 +325,6 @@ public class SharesController {
      * @param request
      * @param model
      * @return
-     */
     @RequestMapping("getGameKChartData.do")
     @SystemControllerLog(module = "magic",option = "获取股票数据",description = "获取模拟游戏对应的股票数据")
     @ResponseBody
@@ -326,5 +334,62 @@ public class SharesController {
         return kChartDataVo;
     }
 
+    @RequestMapping("getGameAccountInfoData.do")
+    @SystemControllerLog(module = "magic",option = "获取账户信息",description = "获取模拟游戏的账户信息")
+    @ResponseBody
+    public ResultVo<SharesAccountInfo> getGameAccountInfoData(String gameCode, HttpServletRequest request, Model model){
+        ResultVo<SharesAccountInfo> resultVo = sharesAccountInfoService.querySharesAccountInfoForGameCode(gameCode);
+        return resultVo;
+    }*/
+    /**
+     * 获取交易主页面数据
+     * @param gameCode
+     * @param next
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("getGameInfoData.do")
+    @SystemControllerLog(module = "magic",option = "获取游戏信息数据",description = "获取游戏信息数据")
+    @ResponseBody
+    public ResultVo getGameInfoData(String gameCode,String next, HttpServletRequest request, Model model){
+        // KChartDataVo kChartDataVo = sharesHistoryDataService.queryKChartData(sharesHistoryData);
+        ResultVo resultVo = sharesGameRecordService.getGameInfoData(gameCode,next);
+        return resultVo;
+    }
+
+    /**
+     * 添加报价单页面
+     * @param gameCode
+     * @param accountid
+     * @param model
+     * @return
+     */
+    @RequestMapping("toOperatorOfferbillPage.do")
+    public String toOperatorOfferbillPage(String gameCode,String accountid,Model model){
+        model.addAttribute("gameCode",gameCode);
+        model.addAttribute("accountid",accountid);
+        return "shares/sharesDealSimulation/operatorOfferbillPage";
+    }
+
+    /**
+     * 保存报价单
+     * @param sharesOfferBill
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("saveOfferbill.do")
+    @ResponseBody
+    public ResultVo operatorOfferbill(SharesOfferBill sharesOfferBill, HttpServletRequest request, Model model){
+        ResultVo resultVo = sharesOfferBillService.saveSharesOfferBill(sharesOfferBill);
+        return resultVo;
+    }
+    @RequestMapping("calcelOfferbill.do")
+    @ResponseBody
+    public ResultVo operatorOfferbill(String offerbillid, HttpServletRequest request, Model model){
+        ResultVo resultVo = sharesOfferBillService.cancelSharesOfferBill(offerbillid);
+        return resultVo;
+    }
     /* 股票实盘交易模拟 结束*/
 }

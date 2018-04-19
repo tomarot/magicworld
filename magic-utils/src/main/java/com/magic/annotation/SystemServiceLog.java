@@ -14,7 +14,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface SystemServiceLog {
-    String module()  default "";
-    String option()  default "";
-    String description()  default "";
+    String module()  default "";//模块
+    String option()  default "";//方法简称
+    String description()  default "";//方法描述
 }

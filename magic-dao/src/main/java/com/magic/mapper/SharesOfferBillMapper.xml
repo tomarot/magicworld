@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magic.dao.SharesOfferBillMapper">
+  <resultMap id="BaseResultMap" type="com.magic.entity.SharesOfferBill">
+    <constructor>
+      <idArg column="id" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="accountid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="quotationbilltype" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="num" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="state" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="isdel" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="createtime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="updatetime" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id,accountid, quotationbilltype, price, num, state, isdel, createtime, updatetime
+  </sql>
+  <sql id="vo_Column_List">
+      id,accountid, quotationbilltype, price, num, state, isdel, createtime, updatetime
+  </sql>
+  <sql id="vo_Column_Where">
+      <if test="id != null">
+          and id = #{id,jdbcType=VARCHAR}
+      </if>
+      <if test="accountid != null and accountid !=''">
+          and accountid = #{accountid,jdbcType=VARCHAR}
+      </if>
+      <if test="quotationbilltype != null and quotationbilltype !=''">
+          and quotationbilltype = #{quotationbilltype,jdbcType=VARCHAR}
+      </if>
+      <if test="price != null">
+          and price = #{price,jdbcType=DOUBLE}
+      </if>
+      <if test="num != null">
+          and num = #{num,jdbcType=INTEGER}
+      </if>
+      <if test="state != null and state!=''">
+          and state = #{state,jdbcType=VARCHAR}
+      </if>
+      <if test="isdel != null and isdel != ''">
+          and isdel = #{isdel,jdbcType=VARCHAR}
+      </if>
+      <if test="createtime != null">
+          and createtime = #{createtime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="updatetime != null">
+          and updatetime = #{updatetime,jdbcType=TIMESTAMP}
+      </if>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from gp_offerbill
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectBySelective" resultType="com.magic.vo.SharesOfferBillVo" parameterType="com.magic.vo.SharesOfferBillVo">
+      select
+      <include refid="vo_Column_List" />
+      from gp_offerbill
+      where 1=1
+      <include refid="vo_Column_Where" />
+  </select>
+  <select id="selectCountBySelective" resultType="java.lang.Integer" parameterType="com.magic.vo.SharesOfferBillVo">
+      select
+      count(1)
+      from gp_offerbill
+      where 1=1
+      <include refid="vo_Column_Where" />
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from gp_offerbill
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.magic.entity.SharesOfferBill">
+    insert into gp_offerbill (id,accountid, quotationbilltype, price,
+      num, state, isdel, 
+      createtime, updatetime)
+    values (#{id,jdbcType=VARCHAR},#{accountid,jdbcType=VARCHAR}, #{quotationbilltype,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE},
+      #{num,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, #{isdel,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magic.entity.SharesOfferBill">
+    insert into gp_offerbill
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+        <if test="accountid != null">
+            accountid,
+        </if>
+      <if test="quotationbilltype != null">
+        quotationbilltype,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="num != null">
+        num,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="isdel != null">
+        isdel,
+      </if>
+      <if test="createtime != null">
+        createtime,
+      </if>
+      <if test="updatetime != null">
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+        <if test="accountid != null">
+            #{accountid,jdbcType=VARCHAR},
+        </if>
+      <if test="quotationbilltype != null">
+        #{quotationbilltype,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="num != null">
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        #{isdel,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magic.entity.SharesOfferBill">
+    update gp_offerbill
+    <set>
+        <if test="accountid != null">
+            accountid = #{accountid,jdbcType=VARCHAR},
+        </if>
+      <if test="quotationbilltype != null">
+        quotationbilltype = #{quotationbilltype,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DOUBLE},
+      </if>
+      <if test="num != null">
+        num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="isdel != null">
+        isdel = #{isdel,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatetime != null">
+        updatetime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

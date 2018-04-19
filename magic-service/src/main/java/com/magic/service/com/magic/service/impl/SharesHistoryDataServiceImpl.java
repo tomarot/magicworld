@@ -139,27 +139,28 @@ public class SharesHistoryDataServiceImpl implements SharesHistoryDataService{
     @Override
     @Transactional
     public KChartDataVo queryGameKChartData(String gameCode,String next) {
+        SharesGameRecord selectGameRecord = new SharesGameRecord();
         //读取游戏进度
         SharesGameRecordVo selectGameRecordVo = new SharesGameRecordVo();
         selectGameRecordVo.setGamecode(gameCode);
-        List<SharesGameRecordVo> list = sharesGameRecordMapper.selectBySelective(selectGameRecordVo);
+        List<SharesGameRecord> list = sharesGameRecordMapper.selectBySelective(selectGameRecordVo);
         if(list!=null&&list.size()>0){
-            selectGameRecordVo = list.get(0);
+            selectGameRecord = list.get(0);
         }
         //获得数据开始位置
-        int startIndex = sharesHistoryDataMapper.getDataStartIndex(selectGameRecordVo.getStartrecordid());
+        int startIndex = sharesHistoryDataMapper.getDataStartIndex(selectGameRecord.getStartrecordid());
         //偏移值
-        int offsetNum = selectGameRecordVo.getOffsetnum().intValue();
-        if(next!=null){
+        int offsetNum = selectGameRecord.getOffsetnum().intValue();
+        if("y".equals(next)){
             offsetNum++;
-            selectGameRecordVo.setOffsetnum(new Long(offsetNum));
-            sharesGameRecordMapper.updateByPrimaryKey(selectGameRecordVo);
+            selectGameRecord.setOffsetnum(new Long(offsetNum));
+            sharesGameRecordMapper.updateByPrimaryKey(selectGameRecord);
         }
         SharesHistoryData sharesHistoryData = new SharesHistoryData();
         sharesHistoryData.setkChartStartIndex(startIndex);
         sharesHistoryData.setLimit(offsetNum + WebConstants.GP.DATALENGTH);
-        sharesHistoryData.setSharesCode(selectGameRecordVo.getGamecode());
-        sharesHistoryData.setFrequency(selectGameRecordVo.getFrequency());
+        sharesHistoryData.setSharesCode(selectGameRecord.getGamecode());
+        sharesHistoryData.setFrequency(selectGameRecord.getFrequency());
         return queryKChartData(sharesHistoryData);
     }
 

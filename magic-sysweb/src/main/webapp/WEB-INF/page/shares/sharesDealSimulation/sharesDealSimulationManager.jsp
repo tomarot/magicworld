@@ -137,7 +137,7 @@
 
             if(layEvent === 'startgame'){ //查看
                 //do somehing
-                window.top.createTab("/shares/toSharesDealSimulationPage.do?gameCode="+data.gamecode,data.gamecode,"游戏编号:"+data.gamecode);
+                window.top.createTab("/shares/toSharesDealSimulationPage.do?gameCode="+data.gamecode+"&accountid="+data.accountid,data.gamecode,"游戏编号:"+data.gamecode);
             } else if(layEvent === 'lookoperatornode'){ //操作记录
             }
         });

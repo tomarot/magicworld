@@ -18,6 +18,23 @@
     <link href="/library/font_awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/library/animate/animate.min.css" rel="stylesheet">
     <link href="/library/layui/css/layui.css" rel="stylesheet">
+    <style type="text/css">
+        h2.accountinfo{
+            text-align: center;
+            margin: 10px 0px;
+            background-color: #e5e9ea;
+        }
+        div.accountinfo{
+            margin: 5px 0px;
+            padding: 0px 10px;
+        }
+        .left{
+            text-align: left;
+        }
+        .right{
+            text-align: right;
+        }
+    </style>
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInUp" style="margin-left: 10px;">
@@ -31,13 +48,14 @@
                     <div style="height:180px;">
                         <form class="layui-form layui-form-pane">
                             <input id="gamecode" type="hidden" value="${gameCode}">
+                            <input id="accountid" type="hidden" value="${accountid}">
                             <div class="layui-form-item" pane="">
                                 <label class="layui-form-label">操作</label>
                                 <div class="layui-input-block">
                                     <%--<button id="selectLowBtn" class="layui-btn layui-btn-sm" style="margin-top: 3px;margin-left: 10px;" type="button">选为低点</button>
                                     <button id="selectHighBtn" class="layui-btn layui-btn-sm" style="margin-top: 3px;margin-left: 5px;" type="button">选为高点</button>--%>
                                     <button id="nextBtn" class="layui-btn layui-btn-sm" style="margin-top: 3px;margin-left: 5px;" type="button">下一天</button>
-                                    <button id="dealBtn" class="layui-btn layui-btn-sm" style="margin-top: 3px;margin-left: 5px;" type="button">买入/卖出</button>
+                                    <button id="dealBtn" class="layui-btn layui-btn-sm" style="margin-top: 3px;margin-left: 5px;" type="button">交易</button>
                                 </div>
                             </div>
                             <div style="margin-top: 10px;">
@@ -56,12 +74,162 @@
         </div>
         <div class="layui-col-xs3" style="height:100%;background-color: white;">
             <div>
-                <div style="height:500px">
-                    账户信息栏
-
+                <%--账户信息--%>
+                <div style="height:160px">
+                    <div class="layui-row">
+                        <div class="layui-col-xs12">
+                            <h2 class="accountinfo">账户信息</h2>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>账户信息:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="accountname">?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>初始资金:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="initmoney">?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>可用资金:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="availablemoney">?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>市值:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="marketvalue">??</label></div>
+                        </div>
+                    </div>
                 </div>
-                <div style="height:180px;">
-                    报价信息
+                <%--当前股价--%>
+                <div style="height:160px;">
+                    <div class="layui-row">
+                        <div class="layui-col-xs12">
+                            <h2 class="accountinfo">当前股价</h2>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>时间:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="datatime" >?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>开盘:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="startprice">?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>最高:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="highprice">?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>最低:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="lowprice">?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>收盘:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="endprice">?</label></div>
+                        </div>
+                    </div>
+                </div>
+                <%--持仓信息--%>
+                <div style="height:170px;">
+                    <div class="layui-row">
+                        <div class="layui-col-xs12">
+                            <h2 class="accountinfo">持仓信息</h2>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>数量:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="warehouseNum">?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>盈亏:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="exhibit">?</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo right"><label>成本/现价:</label></div>
+                        </div>
+                        <div class="layui-col-xs6">
+                            <div class="accountinfo left"><label id="cost">?</label></div>
+                        </div>
+                    </div>
+                </div>
+                <%--报价信息--%>
+                <div style="height:150px;">
+                    <div class="layui-row">
+                        <div class="layui-col-xs12">
+                            <h2 class="accountinfo">当前报价信息</h2>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-col-xs3">
+                            <div class="accountinfo right"><label>单据类型:</label></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="accountinfo left"><label>数量:</label></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="accountinfo left"><label>报价:</label></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="accountinfo left"><label>操作:</label></div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <input id="offerbillid" type="hidden" value="">
+                        <div class="layui-col-xs3">
+                            <div class="accountinfo right"><label id="quotationbilltype">?买入</label></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="accountinfo left"><label id="offerbillNum">?</label></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="accountinfo left"><label id="offerbillPrice">?</label></div>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <div class="accountinfo left"><a id="cancelBtn" class="layui-btn layui-btn-xs">X</a></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,36 +275,114 @@ function initBind(){
     });
     //下一天
     $("#nextBtn").click(function(){
-        getChartData();
+        //加载数据请求
+        getData('y');
     });
     //交易
     $("#dealBtn").click(function(){
-        layer.msg('买入/卖出', {
-            time: 3000, //3s后自动关闭
-            btn: ['知道了']
+        var gameCode = $("#gamecode").val();
+        var accountid = $("#accountid").val();
+        layer.open({
+            type: 2,
+            title: '添加报价单',
+            maxmin: true,
+            shadeClose: false, //点击遮罩关闭层
+            area : ['800px' , '520px'],
+            content: '/shares/toOperatorOfferbillPage.do?gameCode='+gameCode+'&accountid='+accountid
+        });
+    });
+    //取消报价单
+    $("#cancelBtn").click(function(){
+        var offerbillid = $("#offerbillid").val();
+        layer.msg('确定要取消报价单吗？', {
+            shade:0.3,
+            time: 0, //不自动关闭
+            btn: ['确定', '取消'],
+            yes: function(index){
+                layer.close(index);
+                $.getJSON('/shares/calcelOfferbill.do?offerbillid='+offerbillid, function (data) {
+                    if(data.state !== 200) {
+                        alert('读取数据失败！');
+                        return false;
+                    }
+                    window.getData('n')
+                });
+            }
         });
     });
 }
 //页面初始化
 function init(){
+    //加载数据请求
+    getData('n');
+}
+
+window.getData = function getData(flag){
     var gameCode = $("#gamecode").val();
-    $.getJSON('/shares/getGameKChartData.do?gameCode='+gameCode, function (data) {
-        if(data.code !== 200) {
-            alert('读取股票数据失败！');
+    $.getJSON('/shares/getGameInfoData.do?gameCode='+gameCode+'&next='+flag, function (data) {
+        if(data.state !== 200) {
+            alert('读取数据失败！');
             return false;
         }
-        createKChart(data);
+        var chartData = data.data.kChartData;//K线数据
+        createKChart(chartData);
+        var currentKData = data.data.currentKData;//最新数据
+        buildCurrentKData(currentKData);
+        var sharesAccountInfo = data.data.sharesAccountInfo;//账户信息
+        buildAccountInfo(sharesAccountInfo);
+        var sharesWarehouseInfo = data.data.sharesWarehouseInfo;//持仓信息
+        buildWarehouseInfo(sharesWarehouseInfo,currentKData);
+        var sharesOfferBillInfo = data.data.sharesOfferBillInfo;//当前报价单信息
+        buildOfferBillInfo(sharesOfferBillInfo);
     });
 }
-function getChartData(){
-    var gameCode = $("#gamecode").val();
-    $.getJSON('/shares/getGameKChartData.do?gameCode='+gameCode+'&next=y', function (data) {
-        if(data.code !== 200) {
-            alert('读取股票数据失败！');
-            return false;
-        }
-        createKChart(data);
-    });
+//渲染最新数据
+function buildCurrentKData(data){
+    $("#datatime").text(data.dataTime);//时间
+    $("#startprice").text(data.startPrice);//开盘
+    $("#highprice").text(data.highPrice);//最高
+    $("#lowprice").text(data.lowPrice);//最低
+    $("#endprice").text(data.endPrice);//收盘
+}
+//渲染账户信息
+function buildAccountInfo(data){
+    if(!data){
+        return false;
+    }
+    $("#accountname").text(data.accountname);
+    $("#initmoney").text(data.initmoney);
+    $("#availablemoney").text(data.availablemoney);
+    $("#marketvalue").text();
+}
+//渲染持仓信息
+function buildWarehouseInfo(data,currentKData){
+    if(!data){
+        var no = "";
+        $("#warehouseNum").text(no);//数量
+        $("#exhibit").text(no);//盈亏
+        $("#cost").text(no);//成本/现价
+        return false;
+    }
+    $("#warehouseNum").text(data.num);//数量
+    var exhibit = (currentKData.endPrice - data.cost) * data.num;
+    $("#exhibit").text(exhibit);//盈亏
+    $("#cost").text(data.cost+"/"+currentKData.endPrice);//成本/现价
+}
+//渲染报价单信息
+function buildOfferBillInfo(data){
+    if(!data){
+        var no = "";
+        $("#quotationbilltype").text(no);//操作类型
+        $("#offerbillNum").text(no);//数量
+        $("#offerbillPrice").text(no);//价格
+        $("#cancelBtn").hide();
+        return false;
+    }
+    $("#quotationbilltype").text(data.quotationbilltype==0?"买入":"卖出");//操作类型
+    $("#offerbillNum").text(data.num);//数量
+    $("#offerbillPrice").text(data.price);//价格
+    $("#offerbillid").val(data.id);//报价单主键
+    $("#cancelBtn").show();
 }
 //创建K线图
 function createKChart(data){

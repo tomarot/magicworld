@@ -1,39 +1,33 @@
 package com.magic.entity;
 
-import com.magic.utils.PageBean;
-
+import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created with IntelliJ IDEA.
- * User: T5S
- * Date: 2018/2/22
- * Time: 14:34
- * To change this template use File | Settings | File Templates.
- */
-public class SharesGameRecord extends PageBean<SharesGameRecord> {
+public class SharesGameRecord {
 
-    private String id;//数据主键
+    private String id;
 
-    private String gamecode;//游戏编号
+    private String accountid;
 
-    private String sharesid;//股票数据id
+    private String gamecode;
 
-    private String frequency;//周期
+    private String sharesid;
 
-    private Double initmoney;//初始资金
+    private String frequency;
 
-    private Double currentmoney;//当前资金
+    private Double initmoney;
 
-    private String userid;//用户数据id
+    private Double currentmoney;
 
-    private String startrecordid;//开始股票数据id k线图第一根k线的记录
+    private String userid;
 
-    private Long offsetnum;//偏移量
+    private String startrecordid;
 
-    private String gamestate;//游戏状态
+    private Long offsetnum;
 
-    private Date createtime;//创建时间
+    private String gamestate;
+
+    private Date createtime;
 
     public SharesGameRecord(String id, String gamecode, String sharesid, String frequency, Double initmoney, Double currentmoney, String userid, String startrecordid, Long offsetnum, String gamestate, Date createtime) {
         this.id = id;
@@ -59,6 +53,14 @@ public class SharesGameRecord extends PageBean<SharesGameRecord> {
 
     public void setId(String id) {
         this.id = id == null ? null : id.trim();
+    }
+
+    public String getAccountid() {
+        return accountid;
+    }
+
+    public void setAccountid(String accountid) {
+        this.accountid = accountid;
     }
 
     public String getGamecode() {
@@ -98,7 +100,7 @@ public class SharesGameRecord extends PageBean<SharesGameRecord> {
     }
 
     public void setCurrentmoney(Double currentmoney) {
-        this.currentmoney = currentmoney ;
+        this.currentmoney = currentmoney;
     }
 
     public String getUserid() {

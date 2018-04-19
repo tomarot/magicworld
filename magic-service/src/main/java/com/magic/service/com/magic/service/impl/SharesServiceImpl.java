@@ -67,9 +67,9 @@ public class SharesServiceImpl implements SharesService {
     }
 
     @Override
-    public PageBean<SharesGameRecordVo> getSharesDealSimulationList(SharesGameRecordVo sharesGameRecordVo) {
-        PageBean<SharesGameRecordVo> pageBean = new PageBean<SharesGameRecordVo>();
-        List<SharesGameRecordVo> resultList = sharesGameRecordMapper.selectBySelective(sharesGameRecordVo);
+    public PageBean<SharesGameRecord> getSharesDealSimulationList(SharesGameRecordVo sharesGameRecordVo) {
+        PageBean<SharesGameRecord> pageBean = new PageBean<SharesGameRecord>();
+        List<SharesGameRecord> resultList = sharesGameRecordMapper.selectBySelective(sharesGameRecordVo);
         int count = sharesGameRecordMapper.selectCountBySelective(sharesGameRecordVo);
         pageBean.setTotal(count);
         pageBean.setRows(resultList);
@@ -98,6 +98,7 @@ public class SharesServiceImpl implements SharesService {
         SharesGameRecord sharesGameRecord = new SharesGameRecord();
         sharesGameRecord.setUserid(user.getId());
         sharesGameRecord.setSharesid(shares.getId());
+        sharesGameRecord.setAccountid("1");
         sharesGameRecord.setStartrecordid(sharesHistoryData.getId());
         sharesGameRecord.setId(UUIDUtils.getUUID());
         sharesGameRecord.setInitmoney(10000D);

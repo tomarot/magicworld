@@ -25,7 +25,7 @@ public interface SharesGameRecordMapper {
      * @param sharesGameRecordVo
      * @return
      */
-    List<SharesGameRecordVo> selectBySelective(SharesGameRecordVo sharesGameRecordVo);
+    List<SharesGameRecord> selectBySelective(SharesGameRecordVo sharesGameRecordVo);
 
     /**
      * 获取游戏记录总数
