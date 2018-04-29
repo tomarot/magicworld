@@ -40,6 +40,7 @@ public class mainController {
         User user = (User)session.getAttribute("user");
         model.addAttribute("user",user);
         return "systemMain";
+//        return "maintest";
     }
     @RequestMapping("getOneMenus.do")
     @ResponseBody

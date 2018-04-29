@@ -84,21 +84,21 @@ public class SharesWarehouseInfoServiceImpl implements SharesWarehouseInfoServic
     public boolean validationDeal(SharesHistoryData sharesHistoryData, SharesOfferBillVo sharesOfferBillVo) {
         //获取报价单类型
         if(WebConstants.GP.SharesOfferBill.BILLTYPE_BUY.equals(sharesOfferBillVo.getQuotationbilltype())){//买入单
-            //获取当日价格的最高价
-            Double highPrice = sharesHistoryData.getHighPrice();
+            //获取当日价格的最低价
+            Double lowPrice = sharesHistoryData.getLowPrice();
             //获取报价单价格
             Double billPrice = sharesOfferBillVo.getPrice();
-            int result = highPrice.compareTo(billPrice);
-            if(result>=0){//最高价格大于等于报价单价格，验证交易达成。
+            int result = lowPrice.compareTo(billPrice);
+            if(result<=0){//报价单价大于等于格最低价格，验证交易达成。
                 return true;
             }
         }else{//卖出单
             //获取当日价格的最低价
-            Double highPrice = sharesHistoryData.getLowPrice();
+            Double highPrice = sharesHistoryData.getHighPrice();
             //获取报价单价格
             Double billPrice = sharesOfferBillVo.getPrice();
             int result = highPrice.compareTo(billPrice);
-            if(result<=0){//最低价格小于等于报价单价格，验证交易达成
+            if(result>=0){//最高价格大于等于报价单价格，验证交易达成
                 return true;
             }
         }
@@ -120,7 +120,7 @@ public class SharesWarehouseInfoServiceImpl implements SharesWarehouseInfoServic
         //更新持仓信息
         if(WebConstants.GP.SharesOfferBill.BILLTYPE_BUY.equals(sharesOfferBillVo.getQuotationbilltype())){//买入单
             SharesWarehouseInfo sharesWarehouseInfo = new SharesWarehouseInfo();
-            if(sharesWarehouseInfoVo==null){
+            if(sharesWarehouseInfoVo==null){//当前无持仓，直接增加持仓
                 sharesWarehouseInfo.setAccountid(sharesAccountInfo.getId());
                 sharesWarehouseInfo.setId(UUIDUtils.getUUID());
                 sharesWarehouseInfo.setIsdel(WebConstants.NO);
@@ -129,7 +129,7 @@ public class SharesWarehouseInfoServiceImpl implements SharesWarehouseInfoServic
                 sharesWarehouseInfo.setCost(sharesOfferBillVo.getPrice());
                 sharesWarehouseInfo.setSharesid(sharesHistoryData.getSharesId());
                 sharesWarehouseInfoMapper.insertSelective(sharesWarehouseInfo);
-            }else{
+            }else{//当前已有持仓，合并持仓
                 //计算新成本价
                 Integer newNum = sharesWarehouseInfoVo.getNum()+sharesOfferBillVo.getNum();
                 Double newCost = sharesWarehouseInfoVo.getCost()* sharesWarehouseInfoVo.getNum()+sharesOfferBillVo.getPrice()*sharesOfferBillVo.getNum()/newNum;
@@ -153,8 +153,39 @@ public class SharesWarehouseInfoServiceImpl implements SharesWarehouseInfoServic
             //删除报价单
             sharesOfferBillVo.setState(WebConstants.NO);
             sharesOfferBillMapper.updateByPrimaryKeySelective(sharesOfferBillVo);
-        }else{
+        }else{//卖出单
+            //1.从当前持仓减去卖出,计算剩余的持仓
+            Integer syNum = sharesWarehouseInfoVo.getNum() - sharesOfferBillVo.getNum();
+            //2.持仓减去卖出单的数量,计算新的成本
+            //每股持仓成本=（总市值－总盈利）÷剩余总股份
+            Double newCost = ((sharesWarehouseInfoVo.getNum() * sharesOfferBillVo.getPrice() - (sharesOfferBillVo.getPrice()- sharesWarehouseInfoVo.getCost()) * sharesOfferBillVo.getNum())
+                    /sharesWarehouseInfoVo.getNum() - sharesOfferBillVo.getNum());
+            //3.更新持仓信息
+            SharesWarehouseInfo sharesWarehouseInfo = new SharesWarehouseInfo();
+            sharesWarehouseInfo.setAccountid(sharesAccountInfo.getId());
+            sharesWarehouseInfo.setId(sharesWarehouseInfoVo.getId());
+            sharesWarehouseInfo.setUpdatetime(new Date());
+            sharesWarehouseInfo.setNum(syNum);
+            sharesWarehouseInfo.setCost(newCost);
+            if(syNum == 0){
+                sharesWarehouseInfo.setIsdel(WebConstants.YES);
+            }else{
+                sharesWarehouseInfo.setIsdel(WebConstants.NO);
+            }
 
+            sharesWarehouseInfo.setSharesid(sharesHistoryData.getSharesId());
+            sharesWarehouseInfoMapper.updateByPrimaryKeySelective(sharesWarehouseInfo);
+            //4.账号可用余额 加上 卖出单的数量*卖出单的价格
+            Double conutMoney = sharesOfferBillVo.getNum()*sharesOfferBillVo.getPrice();
+            //5.更新账户信息
+            sharesAccountInfo.setAvailablemoney(DoubleUtils.add(sharesAccountInfo.getAvailablemoney(),conutMoney));
+            sharesAccountInfo.setUpdatetime(new Date());
+            sharesAccountInfoMapper.updateByPrimaryKeySelective(sharesAccountInfo);
+            //6.添加操作记录
+
+            //7.删除报价单
+            sharesOfferBillVo.setState(WebConstants.NO);
+            sharesOfferBillMapper.updateByPrimaryKeySelective(sharesOfferBillVo);
         }
         return vo;
     }

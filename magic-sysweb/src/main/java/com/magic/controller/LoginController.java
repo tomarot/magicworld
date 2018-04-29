@@ -68,7 +68,8 @@ public class LoginController {
         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
         model.addAttribute("user",user);
-        return "main";
+//        return "main";
+        return "maintest";
     }
     @RequestMapping("/mainPage_bak.htm")
     public String mainBakPage(HttpServletRequest request,Model model){
